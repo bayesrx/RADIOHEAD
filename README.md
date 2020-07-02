@@ -3,14 +3,11 @@
 RADIOHEAD is a package to fit the model proposed in the manuscript: 
 [S Mohammed](shariq-mohammed.github.io), K Bharath, S Kurtek, A Rao, [V Baladandayuthapani](bayesrx.github.io), *2020*, _RADIOHEAD: Radiogenomic Analysis Incorporating Tumor Heterogeneity in Imaging Through Densities_.
 
-Example code to run the RADIOHEAD pipeline. This code only shows an example execution of the model and the package RADIOHEAD.
+Example code to run the RADIOHEAD pipeline. This code only shows an example execution of the model using the package RADIOHEAD.
 
 ```
-# Change the directory to where the package is saved
-setwd('C:/Users/xyz/R Package')
-
 # install the package (devtools package needed)
-devtools::install('./RADIOHEAD')
+if(!require(RADIOHEAD)) devtools::install_github('shariq-mohammed/RADIOHEAD')
 ```
 
 Load the package
