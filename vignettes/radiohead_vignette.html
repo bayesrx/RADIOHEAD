@@ -12,17 +12,81 @@
 
 <meta name="author" content="Shariq Mohammed" />
 
-<meta name="date" content="2020-07-01" />
+<meta name="date" content="2020-12-08" />
 
 <title>RADIOHEAD Example</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,14 +96,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -48,9 +114,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -301,41 +367,131 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">RADIOHEAD Example</h1>
 <h4 class="author">Shariq Mohammed</h4>
-<h4 class="date">2020-07-01</h4>
+<h4 class="date">2020-12-08</h4>
 
 
 
-<p>Example code to run the RADIOHEAD pipeline. This code only shows an example execution of the model and the package RADIOHEAD.</p>
 <p>RADIOHEAD is a package to fit the model proposed in the manuscript: <a href="shariq-mohammed.github.io">S Mohammed</a>, K Bharath, S Kurtek, A Rao, <a href="bayesrx.github.io">V Baladandayuthapani</a>, <em>2020</em>, <em>RADIOHEAD: Radiogenomic Analysis Incorporating Tumor Heterogeneity in Imaging Through Densities</em>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># Change the directory to where the package is saved</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">setwd</span>(<span class="st">&#39;C:/Users/xyz/R Package&#39;</span>)</a>
-<a class="sourceLine" id="cb1-3" title="3"></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="co"># install the package (devtools package needed)</span></a>
-<a class="sourceLine" id="cb1-5" title="5">devtools<span class="op">::</span><span class="kw">install</span>(<span class="st">&#39;./RADIOHEAD&#39;</span>)</a></code></pre></div>
+<p>Example code to run the RADIOHEAD pipeline. This code only shows an example execution of the model using the package RADIOHEAD.</p>
+<p>This document contains the following:</p>
+<ol style="list-style-type: decimal">
+<li><strong>An example to run the RADIOHEAD model using the data available in the package</strong></li>
+<li><strong>Pre-processing of the imaging and genomic data</strong>
+<ol style="list-style-type: lower-alpha">
+<li><strong>Computing pathway scores for a gene set</strong></li>
+<li><strong>Pre-processing magnetic resonance imaging scans</strong></li>
+</ol></li>
+</ol>
+<!--- The chunk below will not be executed --->
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># install the package (devtools package needed)</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="cf">if</span>(<span class="op">!</span><span class="kw">require</span>(devtools)) <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&#39;shariq-mohammed/RADIOHEAD&#39;</span>)</span></code></pre></div>
 <p>Load the package</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">library</span>(RADIOHEAD)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(RADIOHEAD)</span></code></pre></div>
 <div id="example" class="section level1">
 <h1>Example</h1>
 <p><em>Note that the data is available within the package.</em></p>
 <p>Choose the pathway score for the ‘EXOCYTOSIS’ pathway.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">y =<span class="st"> </span><span class="kw">scale</span>(c_pathway_scores[,<span class="st">&quot;EXOCYTOSIS&quot;</span>], <span class="dt">center =</span> T, <span class="dt">scale =</span> F)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>y =<span class="st"> </span><span class="kw">scale</span>(c_pathway_scores[,<span class="st">&quot;EXOCYTOSIS&quot;</span>], <span class="dt">center =</span> T, <span class="dt">scale =</span> F)</span></code></pre></div>
 <p>Choose the principal component scores based on radiomic images.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">X =<span class="st"> </span><span class="kw">scale</span>(pc_scores, <span class="dt">center =</span> T, <span class="dt">scale =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>X =<span class="st"> </span><span class="kw">scale</span>(pc_scores, <span class="dt">center =</span> T, <span class="dt">scale =</span> T)</span></code></pre></div>
 <p>Choose the group membership labels for the principal components.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">groups =<span class="st"> </span>pc_groups</a></code></pre></div>
-<p>Execute the Gibbs sampling</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">res =<span class="st"> </span><span class="kw">groupSS</span>(y, X, groups, <span class="dt">Nmcmc=</span><span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; [1] &quot;2020-07-01 16:17:37 Iteration 1000&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>groups =<span class="st"> </span>pc_groups</span></code></pre></div>
+<p>Execute the Gibbs sampling.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>res =<span class="st"> </span><span class="kw">groupSS</span>(y, X, groups, <span class="dt">Nmcmc=</span><span class="dv">1000</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; [1] &quot;2020-12-08 06:51:37 Iteration 1000&quot;</span></span></code></pre></div>
 <p>Identify the significant radiogenomic associaitons between the pathway and the radiomic features after a Bayesian FDR-based variable selection.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># &#39;associations&#39; outputs the effect size of the significant associations.</span></a>
-<a class="sourceLine" id="cb7-2" title="2">associations =<span class="st"> </span><span class="kw">fdr_var_selection</span>(res<span class="op">$</span>b, res<span class="op">$</span>x_cnames)</a>
-<a class="sourceLine" id="cb7-3" title="3">associations</a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;     T1_NCR.NET.8     T1_NCR.NET.9          T1_ET.2         T1_ET.12 </span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;       0.11889985       0.00000000       0.15003099       0.05619880 </span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt;        T1Gd_ED.2        T1Gd_ED.7        T1Gd_ET.4        T1Gd_ET.8 </span></a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;      -0.06831786      -0.10899141      -0.04743239      -0.06894702 </span></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt;     T2_NCR.NET.9          T2_ED.6 FLAIR_NCR.NET.12      FLAIR_ED.13 </span></a>
-<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt;       0.10564789      -0.15859604       0.11409109      -0.06795794</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># &#39;associations&#39; outputs the effect size of the significant associations.</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>associations =<span class="st"> </span><span class="kw">fdr_var_selection</span>(res<span class="op">$</span>b, res<span class="op">$</span>x_cnames)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>associations</span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt; [1] &quot;No significant associations.&quot;</span></span></code></pre></div>
+</div>
+<div id="pre-processing-of-the-imaging-and-genomic-data" class="section level1">
+<h1>Pre-processing of the imaging and genomic data</h1>
+<div id="computing-pathway-scores-for-a-gene-set" class="section level2">
+<h2>Computing pathway scores for a gene set</h2>
+<p>Below we demonstrate an example to compute pathway scores from a randomly generated gene expression data set. The same process can be employed to compute the pathway scores for any gene expression data.</p>
+<p>Install the <code>GSVA</code> package and dependencies. Load <code>GSEABase</code> and <code>GSVA</code> package.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="cf">if</span>(<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) <span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="cf">if</span>(<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;GSVA&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;GSVA&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">library</span>(GSEABase)</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="kw">library</span>(GSVA)</span></code></pre></div>
+<p>Gene sets can be downloaded from the molecular signature database (<a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp">MSigDB</a>). For example, we obtain the gene membership of the EXOCYTOSIS pathway on MSigDB <a href="https://www.gsea-msigdb.org/gsea/msigdb/geneset_page.jsp?geneSetName=GO_EXOCYTOSIS&amp;keywords=exocytosis">from here</a>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>gene.set =<span class="st"> </span><span class="kw">getGmt</span>(<span class="st">&quot;https://www.gsea-msigdb.org/gsea/msigdb/download_geneset.jsp?geneSetName=GO_EXOCYTOSIS&amp;fileType=gmt&quot;</span>)</span></code></pre></div>
+<p>Randomly generate gene expression data for 5 subjects and 1000 genes.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>gene.expr =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">5</span><span class="op">*</span><span class="dv">1000</span>), <span class="dt">ncol=</span><span class="dv">5</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="kw">colnames</span>(gene.expr) =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;Subject&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="kw">rownames</span>(gene.expr) =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;Gene&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>)</span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co"># Set row names as the gene names from the pathway</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>gene.ids =<span class="st"> </span>gene.set<span class="op">@</span>.Data[[<span class="dv">1</span>]]<span class="op">@</span>geneIds</span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="kw">rownames</span>(gene.expr)[<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(gene.ids)] =<span class="st"> </span>gene.ids</span></code></pre></div>
+<p>Compute the pathway scores.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>pathwayScores =<span class="st"> </span><span class="kw">gsva</span>(gene.expr, gene.set, <span class="dt">method=</span><span class="st">&#39;gsva&#39;</span>, <span class="dt">verbose=</span><span class="ot">FALSE</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>pathwayScores</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co">#&gt;                Subject1    Subject2   Subject3   Subject4    Subject5</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#&gt; GO_EXOCYTOSIS 0.2091517 -0.01411802 0.03157573 -0.1552565 -0.06878825</span></span></code></pre></div>
+<p>These pathway scores can be used as response via the <code>groupSS</code> function to fit the model proposed in RADIOHEAD framework.</p>
+</div>
+<div id="pre-processing-magnetic-resonance-imaging-scans" class="section level2">
+<h2>Pre-processing magnetic resonance imaging scans</h2>
+<p>The pre-processing of magnetic resonance imaging (MRI) scans involves the following steps</p>
+<ul>
+<li><em>Step 1</em>: WhiteStripe normalization
+<ul>
+<li>We perform the WhiteStripe normalization using the <code>whitestripe</code> function directly from the package <a href="https://cran.r-project.org/web/packages/WhiteStripe/index.html"><code>WhiteStripe</code></a>.</li>
+</ul></li>
+<li><em>Step 2</em>: Obtain tumor voxel values from various groups as defined by different combinations of MRI sequences (T1, T1Gd, T2, FLAIR) and tumor sub-regions (necrosis, edema, and enhancing tumor regions)</li>
+<li><em>Step 3</em>: Compute the principal component scores using the Riemannian-geometric framework for each group separately</li>
+</ul>
+<p>We demonstrate steps 2 and 3 with simple examples (using randomly generated data for five subjects). The same process can be used for real MRI scans.</p>
+<p><em>Note:</em> Here we directly work with three dimensional arrays. If the actual MRI scans and the tumor segmentation labels are stored as NIfTI files, then the package <a href="https://cran.r-project.org/web/packages/oro.nifti/index.html"><code>oro.nifti</code></a> can be used to import/load the data.</p>
+<p>Generate MRI data of array size 10x10x10 for five subjects by randomly sampling 10x10x10 values from a standard normal distribution. Similarly, generate the corresponding tumor segmentation labels for the five subjects. Here the segmentation labels contain four values, where 0 indicates non-tumor region and 1, 2 and 3 indicate tumor sub-regions.</p>
+<p><em>Note:</em> In the following we have not considered multiple MRI sequences. The groups are formed due to the tumor sub-regions. But the same procedure can be repeated for multiple MRI sequences.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>n =<span class="st"> </span><span class="dv">5</span> <span class="co"># number of subjects</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>){</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&#39;mri&#39;</span>,i), <span class="kw">array</span>(<span class="kw">rnorm</span>(<span class="dv">10</span><span class="op">*</span><span class="dv">10</span><span class="op">*</span><span class="dv">10</span>), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>)))</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&#39;tumor&#39;</span>,i), <span class="kw">array</span>(<span class="kw">rep</span>(<span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span>),<span class="kw">c</span>(<span class="dv">125</span>,<span class="dv">125</span>,<span class="dv">125</span>,<span class="dv">1000</span><span class="op">-</span>(<span class="dv">3</span><span class="op">*</span><span class="dv">125</span>))), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>)))</span>
+<span id="cb12-5"><a href="#cb12-5"></a>}</span></code></pre></div>
+<div id="step-2" class="section level3">
+<h3>Step 2</h3>
+<p>Obtain tumor voxel values from three groups as defined by tumor sub-regions (indexed by 1, 2 and 3).</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># sub-region 1</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>tum<span class="fl">.1</span> =<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span>n,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>               <span class="cf">function</span>(i){</span>
+<span id="cb13-4"><a href="#cb13-4"></a>                 mri =<span class="st"> </span><span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&#39;mri&#39;</span>,i)))</span>
+<span id="cb13-5"><a href="#cb13-5"></a>                 tumor =<span class="st"> </span><span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&#39;tumor&#39;</span>,i)))</span>
+<span id="cb13-6"><a href="#cb13-6"></a>                 x =<span class="st"> </span><span class="kw">c</span>(mri[tumor<span class="op">==</span><span class="dv">1</span>])</span>
+<span id="cb13-7"><a href="#cb13-7"></a>               })</span>
+<span id="cb13-8"><a href="#cb13-8"></a></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="co"># sub-region 2</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>tum<span class="fl">.2</span> =<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span>n,</span>
+<span id="cb13-11"><a href="#cb13-11"></a>               <span class="cf">function</span>(i){</span>
+<span id="cb13-12"><a href="#cb13-12"></a>                 mri =<span class="st"> </span><span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&#39;mri&#39;</span>,i)))</span>
+<span id="cb13-13"><a href="#cb13-13"></a>                 tumor =<span class="st"> </span><span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&#39;tumor&#39;</span>,i)))</span>
+<span id="cb13-14"><a href="#cb13-14"></a>                 x =<span class="st"> </span><span class="kw">c</span>(mri[tumor<span class="op">==</span><span class="dv">2</span>])</span>
+<span id="cb13-15"><a href="#cb13-15"></a>               })</span>
+<span id="cb13-16"><a href="#cb13-16"></a></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="co"># sub-region 3</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a>tum<span class="fl">.3</span> =<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span>n,</span>
+<span id="cb13-19"><a href="#cb13-19"></a>               <span class="cf">function</span>(i){</span>
+<span id="cb13-20"><a href="#cb13-20"></a>                 mri =<span class="st"> </span><span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&#39;mri&#39;</span>,i)))</span>
+<span id="cb13-21"><a href="#cb13-21"></a>                 tumor =<span class="st"> </span><span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&#39;tumor&#39;</span>,i)))</span>
+<span id="cb13-22"><a href="#cb13-22"></a>                 x =<span class="st"> </span><span class="kw">c</span>(mri[tumor<span class="op">==</span><span class="dv">3</span>])</span>
+<span id="cb13-23"><a href="#cb13-23"></a>               })</span></code></pre></div>
+</div>
+<div id="step-3" class="section level3">
+<h3>Step 3</h3>
+<p>Compute the principal component scores for each group separately using the <code>geomPCA</code> function.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>pc.scores<span class="fl">.1</span> =<span class="st"> </span><span class="kw">geomPCA</span>(tum<span class="fl">.1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>pc.scores<span class="fl">.2</span> =<span class="st"> </span><span class="kw">geomPCA</span>(tum<span class="fl">.2</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a>pc.scores<span class="fl">.3</span> =<span class="st"> </span><span class="kw">geomPCA</span>(tum<span class="fl">.3</span>)</span></code></pre></div>
+<p>These principal component scores can be augmented together (by column) and used to fit the model (via the <code>groupSS</code> function) proposed by in the RADIOHEAD framework. The group indicators (i.e. a label for each column in the augmented matrix) need to be specified appropriately.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>pc.scores =<span class="st"> </span><span class="kw">cbind</span>(pc.scores<span class="fl">.1</span>, pc.scores<span class="fl">.2</span>, pc.scores<span class="fl">.3</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>pc.groups =<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="kw">c</span>(<span class="kw">length</span>(pc.scores<span class="fl">.1</span>),</span>
+<span id="cb15-3"><a href="#cb15-3"></a>                            <span class="kw">length</span>(pc.scores<span class="fl">.2</span>), <span class="kw">length</span>(pc.scores<span class="fl">.3</span>)))</span></code></pre></div>
+</div>
+</div>
 </div>
 
 
